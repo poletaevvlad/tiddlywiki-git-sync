@@ -1,5 +1,15 @@
 #! /bin/sh
 
+function init() {
+    if [[ -e wiki ]]
+    then
+        echo "'wiki' already exists, aborting"
+        exit 1
+    fi
+
+    git clone $CLONEPATH wiki
+}
+
 function on_terminate() {
     pid=$1
     kill -int $pid
@@ -27,16 +37,12 @@ function sync_repo() {
 }
 
 
-test -d "./wiki" && rm -rf wiki
-git clone $CLONEPATH wiki
-
+init
 ./node_modules/.bin/tiddlywiki wiki --listen &
 wikipid=$!
-
-trap "on_terminate $wikipid" EXIT
-
 cd wiki
 
+trap "on_terminate $wikipid" EXIT
 while true
 do
     sleep 15s && sync_repo
