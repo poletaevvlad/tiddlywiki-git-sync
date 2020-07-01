@@ -1,0 +1,7 @@
+{
+  "name": "tiddlywiki-git-sync",
+  "version": "1.0.0",
+  "dependencies": {
+    "tiddlywiki": "^5.1.22"
+  }
+}
