@@ -66,7 +66,7 @@ function sync_repo() {
 
 
 init
-./node_modules/.bin/tiddlywiki wiki --listen "$OPTIONS" &
+./node_modules/.bin/tiddlywiki wiki --listen port=${PORT:-8080} host=${BIND:-127.0.0.1} $OPTIONS &
 wikipid=$!
 cd wiki
 
