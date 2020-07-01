@@ -8,6 +8,23 @@ function init() {
     fi
 
     git clone $CLONEPATH wiki
+
+    cd wiki
+    git config pull.rebase false
+
+    if [[ -n "${COMMITER_NAME}" ]]; then
+        if [[ -z "${COMMITER_EMAIL}" ]]; then
+            echo "if COMMITER_NAME is set then COMMITER_EMAIL must be set as well"
+            cd ..
+            rm -rf wiki
+            exit 1
+        fi
+
+        git config user.name "$COMMITER_NAME"
+        git config user.email "$COMMITER_EMAIL"
+    fi
+
+    cd ..
 }
 
 function on_terminate() {
