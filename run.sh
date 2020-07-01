@@ -4,8 +4,7 @@ set -e
 root_path=$(pwd)
 
 function init() {
-    if [[ -e wiki ]]
-    then
+    if [[ -e wiki ]]; then
         echo "'wiki' already exists, aborting"
         exit 1
     fi
@@ -45,8 +44,7 @@ function on_terminate() {
     pid=$1
     kill -int $pid
 
-    while $(kill -0 $pid 2> /dev/null)
-    do
+    while $(kill -0 $pid 2> /dev/null); do
         sleep 1
     done
 
@@ -57,8 +55,7 @@ function on_terminate() {
 
 
 function sync_repo() {
-    if [[ -z "$(git status --short)" ]]
-    then
+    if [[ -z "$(git status --short)" ]]; then
         return
     fi
     git add .
@@ -74,7 +71,6 @@ wikipid=$!
 cd wiki
 
 trap "on_terminate $wikipid" EXIT
-while true
-do
+while true; do
     sleep ${PERIOD:-5m} && sync_repo
 done
