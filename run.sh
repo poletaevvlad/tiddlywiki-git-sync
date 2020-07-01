@@ -76,5 +76,5 @@ cd wiki
 trap "on_terminate $wikipid" EXIT
 while true
 do
-    sleep 45s && sync_repo
+    sleep ${PERIOD:-5m} && sync_repo
 done
