@@ -1,5 +1,8 @@
 #! /bin/sh
 
+set -e
+root_path=$(pwd)
+
 function init() {
     if [[ -e wiki ]]
     then
@@ -7,9 +10,10 @@ function init() {
         exit 1
     fi
 
-    git clone $CLONEPATH wiki
-
+    mkdir wiki
     cd wiki
+    git init
+
     git config pull.rebase false
 
     if [[ -n "${COMMITER_NAME}" ]]; then
@@ -23,6 +27,16 @@ function init() {
         git config user.name "$COMMITER_NAME"
         git config user.email "$COMMITER_EMAIL"
     fi
+
+    if [[ -n "$CREDENTIALS" ]]; then
+        git config credential.helper "store --file ${root_path}/creds"
+        echo "$CREDENTIALS" > ${root_path}/creds
+    fi
+
+    git remote add origin "$CLONEPATH"
+    git fetch origin --depth=1
+    git checkout master
+    git pull
 
     cd ..
 }
@@ -55,12 +69,12 @@ function sync_repo() {
 
 
 init
-./node_modules/.bin/tiddlywiki wiki --listen &
+./node_modules/.bin/tiddlywiki wiki --listen "$OPTIONS" &
 wikipid=$!
 cd wiki
 
 trap "on_terminate $wikipid" EXIT
 while true
 do
-    sleep 15s && sync_repo
+    sleep 45s && sync_repo
 done
