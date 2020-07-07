@@ -3,8 +3,8 @@
 set -e
 root_path=$(pwd)
 
-function init() {
-    if [[ -e wiki ]]; then
+init() {
+    if [ -e wiki ]; then
         echo "'wiki' already exists, aborting"
         exit 1
     fi
@@ -15,8 +15,8 @@ function init() {
 
     git config pull.rebase false
 
-    if [[ -n "${COMMITER_NAME}" ]]; then
-        if [[ -z "${COMMITER_EMAIL}" ]]; then
+    if [ -n "${COMMITER_NAME}" ]; then
+        if [ -z "${COMMITER_EMAIL}" ]; then
             echo "if COMMITER_NAME is set then COMMITER_EMAIL must be set as well"
             cd ..
             rm -rf wiki
@@ -27,9 +27,9 @@ function init() {
         git config user.email "$COMMITER_EMAIL"
     fi
 
-    if [[ -n "$CREDENTIALS" ]]; then
+    if [ -n "$CREDENTIALS" ]; then
         git config credential.helper "store --file ${root_path}/creds"
-        echo "$CREDENTIALS" > ${root_path}/creds
+        echo "$CREDENTIALS" > "${root_path}"/creds
     fi
 
     git remote add origin "$CLONEPATH"
@@ -40,7 +40,7 @@ function init() {
     cd ..
 }
 
-function on_terminate() {
+on_terminate() {
     pid=$1
     kill -int $pid
 
@@ -54,8 +54,8 @@ function on_terminate() {
 }
 
 
-function sync_repo() {
-    if [[ -z "$(git status --short)" ]]; then
+sync_repo() {
+    if [ -z "$(git status --short)" ]; then
         return
     fi
     git add .
