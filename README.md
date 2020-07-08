@@ -50,5 +50,5 @@ Additional options to be passed to the server.
 
 `PERIOD`<br>
 How often to perform "commit-pull-push" operation. Uses the same syntax as the
-`[sleep](https://linux.die.net/man/1/sleep)` utility.
+[`sleep`](https://linux.die.net/man/1/sleep) utility.
 
